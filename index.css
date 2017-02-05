@@ -1,7 +1,7 @@
 body {
   width: 100vw;
   height: 100vh;
-  background: url(/assets/whip.jpg);
+  background: url(assets/whip.jpg);
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center center;
@@ -9,7 +9,7 @@ body {
   margin: 0;
 }
 .cover {
-  background-image: url('/assets/wood-plank-texture.jpg');
+  background-image: url('assets/wood-plank-texture.jpg');
   position: fixed;
   top: 0;
   right: 0;
