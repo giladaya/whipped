@@ -10,6 +10,7 @@ body {
 }
 .cover {
   background-image: url('assets/wood-plank-texture.jpg');
+  background-color: #b6a694;
   position: fixed;
   top: 0;
   right: 0;
