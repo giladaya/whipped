@@ -1,18 +1,21 @@
-const STATE_BETWEEN = 10
-const ACC_TH = 6;
+"use strict";
 
-const STATE_IDLE = 0,
-      STATE_BK_PT1 = 1,
-      STATE_BK_PT2 = 2,
-      STATE_FW_PT1 = 3,
-      STATE_FW_PT2 = 4;
 
-const PT1_ACC_TH = 4,
-      PT2_ACC_TH = 7;
+// States
+const STATE_IDLE = 0;
+const STATE_IN_FIRST = 20,
+      STATE_AFTER_FIRST = 21,
+      STATE_AFTER_SECOND = 23;
 
+// Acceleration threshold
+const ACC_TH = 6; 
+
+// Time deltas
+// debouncing and prunning
 const MAX_TIME_DELTA_MS = 800,
-      MIN_TIME_DELAY_MS = 150;
+      MIN_TIME_DELAY_MS = 400;
 
+// Sample smoothing factor
 const ALPHA = 0.5;
 
 let lastStateTs = Date.now(),
@@ -21,16 +24,14 @@ let lastStateTs = Date.now(),
     direction = 1;
 
 
+// Level out
 resetState();
 
-const sound1 = document.createElement("audio");
-sound1.preload = 'auto';
-sound1.src = 'assets/whip_whoosh.mp3';
+// Audio sample holders
+const sound1 = new Audio('assets/whip_whoosh.mp3');
+const sound2 = new Audio('assets/whip_crack.mp3');
 
-const sound2 = document.createElement("audio");
-sound2.preload = 'auto';
-sound2.src = 'assets/whip_crack.mp3';
-
+// We need a gesture to load the audio samples
 document.getElementById('cover').onclick = loadAudio;
 window.addEventListener('devicemotion', onMotion);
 
@@ -40,7 +41,13 @@ function loadAudio() {
   sound1.pause();
   sound2.play();
   sound2.pause();
-  document.getElementById('cover').style.display = 'none';
+
+  //hide the cover - we got what we wanted (user interaction)
+  const el = document.getElementById('cover');
+  el.classList.add('fall');
+  setTimeout(function() {
+    el.style.display = 'none'; 
+  }, 600);  
 }
 
 function onMotion(ev) {
@@ -48,44 +55,34 @@ function onMotion(ev) {
   lastAx = ax;
   const now = Date.now();
   const elapsed = now - lastStateTs;
-  // if (elapsed > MAX_TIME_DELTA_MS && state != STATE_IDLE && state != STATE_BK_PT2) {
-  //   resetState();
-  // }
-  // if (elapsed > 3*MAX_TIME_DELTA_MS && state == STATE_BK_PT1) {
-  //   resetState();
-  // }
 
-  if (elapsed > MAX_TIME_DELTA_MS && state != STATE_IDLE && state != STATE_BETWEEN) {
+  // Generic keep fresh
+  if (elapsed > MAX_TIME_DELTA_MS && state != STATE_IDLE && state != STATE_AFTER_FIRST) {
+    // Deprecate whatever state we are in
     resetState();
   }
-  if (elapsed > 2*MAX_TIME_DELTA_MS && state == STATE_BETWEEN) {
+  // Too long after first motion
+  if (elapsed > 2*MAX_TIME_DELTA_MS && state == STATE_AFTER_FIRST) {
     resetState();
   }
 
   if (state == STATE_IDLE && Math.abs(ax) > ACC_TH && elapsed > MIN_TIME_DELAY_MS) {
     console.log(ax);
     direction = Math.sign(ax);
-    setState(STATE_BETWEEN);
+    setState(STATE_IN_FIRST);
     playSound1();
-  } else if (state == STATE_BETWEEN && Math.abs(ax) > ACC_TH && Math.sign(ax) == direction && elapsed > MIN_TIME_DELAY_MS) {
+  } else if (state == STATE_IN_FIRST && Math.abs(ax) > ACC_TH && Math.sign(ax) == -direction) {
+    setState(STATE_AFTER_FIRST);
+  } else if (state == STATE_AFTER_FIRST && Math.abs(ax) > ACC_TH && Math.sign(ax) == direction) {
     console.log(ax);
-    setState(STATE_IDLE);
+    setState(STATE_AFTER_SECOND);
     playSound2();
-  } 
 
-  // if (state == STATE_IDLE && Math.abs(ax) > PT1_ACC_TH && elapsed > MIN_TIME_DELAY_MS) {
-  //   direction = Math.sign(ax);
-  //   setState(STATE_BK_PT1);
-  // } else if (state == STATE_BK_PT1 && ax < -direction*PT2_ACC_TH ) {
-  //   setState(STATE_BK_PT2);
-  //   playSound1();
-  // } else if (state == STATE_BK_PT2 && ax < -direction*PT1_ACC_TH && elapsed > MIN_TIME_DELAY_MS) {
-  //   setState(STATE_FW_PT1);
-  // } else if (state == STATE_FW_PT1 && ax > direction*PT2_ACC_TH) {
-  //   setState(STATE_FW_PT2);
-  //   playSound2();
-  //   setState(STATE_IDLE);
-  // }
+    // block for a while
+    setTimeout(function() {
+      resetState();
+    }, MIN_TIME_DELAY_MS);
+  } 
 }
 
 function resetState() {
