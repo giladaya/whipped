@@ -1,9 +1,9 @@
-// version: 1.2
+// version: 1.3
 "use strict";
 
-console.log("Hello from SW");
 const CACHE_NAME = "whipped-cache";
 const assets = [
+  "/",
   "/index.html",
   "/index.js",
   "/index.css",
