@@ -91,7 +91,7 @@ self.__precacheManifest = [
   },
   {
     "url": "manifest.json",
-    "revision": "355aeabace81adf83ef121dd4b46fe7c"
+    "revision": "5ab739c1cf54ca1b6232bea145ebdf0f"
   }
 ].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
