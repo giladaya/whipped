@@ -1,0 +1,28 @@
+{
+  "name": "whipped",
+  "version": "1.0.0",
+  "description": "Whip app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "live-server src --port=8087",
+    "deploy": "gh-pages -d src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/giladaya/whipped.git"
+  },
+  "keywords": [
+    "PWA"
+  ],
+  "author": "Gilad Dayagi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/giladaya/whipped/issues"
+  },
+  "homepage": "https://github.com/giladaya/whipped#readme",
+  "devDependencies": {
+    "gh-pages": "^2.0.1",
+    "live-server": "^1.2.1"
+  }
+}
