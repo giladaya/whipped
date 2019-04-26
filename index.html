@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Welcome to Whipped!</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="index.css" rel="stylesheet" type="text/css" />
+    <link rel="icon" href="assets/icons/icon-72x72.png" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="theme-color" content="#9198e5" />
+  </head>
+  <body>
+    <noscript>
+      This won't work without Javascript :(
+    </noscript>
+    <div id="infolink">
+      <a href="https://github.com/giladaya/whipped"">ⓘ</a>
+    </div>
+    <div class="cover" id="cover">
+      <div class="btn call">
+        <div>
+          &#9733;<br />
+          Click to get Whippin!<br />
+          &#9733;
+        </div>
+      </div>
+    </div>
+    <script src="index.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", function() {
+          navigator.serviceWorker.register("/sw.js")
+          .then(registration => {
+            // Registration was successful
+            console.log(
+              "ServiceWorker registration successful with scope: ",
+              registration.scope
+            );
+          }, err => {
+            // registration failed :(
+            console.error("ServiceWorker registration failed: ", err);
+          });
+        });
+      }
+    </script>
+  </body>
+</html>
