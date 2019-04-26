@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "live-server . --port=8087",
+    "start": "live-server . --port=8087 --open=src",
     "swgen": "workbox generateSW workbox-config.js",
     "deploy": "gh-pages -d src"
   },
