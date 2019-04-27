@@ -26,8 +26,6 @@ let lastStateTs = Date.now(),
 resetState();
 
 // Audio sample holders
-const sound1 = new Audio("assets/whip_whoosh.mp3");
-const sound2 = new Audio("assets/whip_crack.mp3");
 let sound3, sound4;
 
 // We need a gesture to load the audio samples
@@ -91,21 +89,8 @@ function Player(uri) {
 }
 
 function loadAudio() {
-  // sound1.play();
-  // sound1.pause();
-  // sound2.play();
-  // sound2.pause();
   sound3 = new Player("assets/whip_whoosh.mp3");
   sound4 = new Player("assets/whip_crack.mp3");
-  // const $whipbtn = document.body;
-  // $whipbtn.addEventListener('touchstart', () => {
-  //   // playSound1();
-  //   sound3.play();
-  // }, false);
-  // $whipbtn.addEventListener('mousedown', () => {
-  //   // playSound1();
-  //   sound3.play();
-  // }, false);
 
   //hide the cover - we got what we wanted (user interaction)
   const el = document.getElementById("cover");
@@ -178,11 +163,11 @@ function setState(newState) {
 }
 
 function playSound1() {
-  document.body.style.background = "red";
+  // document.body.style.background = "red";
   sound3.play();
 }
 
 function playSound2() {
-  document.body.style.background = "green";
+  // document.body.style.background = "green";
   sound4.play();
 }
